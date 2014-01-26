@@ -2,7 +2,6 @@ package pl.baumgart.netflixrecomendation;
 
 import org.la4j.LinearAlgebra;
 import org.la4j.matrix.dense.Basic2DMatrix;
-import org.la4j.vector.Vector;
 import org.la4j.vector.dense.BasicVector;
 
 import java.io.FileInputStream;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class RecomendationUtility {
 
@@ -24,7 +24,7 @@ public class RecomendationUtility {
 
     public ArrayList<ScoredMovie> recommend(ArrayList<ScoredMovie> inputScores) {
         Basic2DMatrix data = new Basic2DMatrix(inputScores.size(), NUMBER_OF_FEATURES_USED);
-        Vector targetScores = new BasicVector(inputScores.size());
+        org.la4j.vector.Vector targetScores = new BasicVector(inputScores.size());
 
         for (int i = 0; i < inputScores.size(); i++) {
             for (int j = 0; j < NUMBER_OF_FEATURES_USED; j++) {
@@ -33,11 +33,35 @@ public class RecomendationUtility {
             targetScores.set(i, inputScores.get(i).score - inputScores.get(i).movie.avg);
         }
 
-        Vector usersCoefficients = data.transpose().multiply(data)
+        org.la4j.vector.Vector usersCoefficients = data.transpose().multiply(data)
                 .withInverter(LinearAlgebra.InverterFactory.GAUSS_JORDAN).inverse()
                 .multiply(data.transpose()).multiply(targetScores);
 
         ArrayList<ScoredMovie> result = new ArrayList<>();
+        for (Movie movie : movies) {
+            double score = usersCoefficients.toRowMatrix().multiply(new BasicVector(movie.features)).sum() + movie.avg;
+            result.add(new ScoredMovie(movie, score));
+        }
+
+        return result;
+    }
+
+    public java.util.Vector<ScoredMovie> recommend(java.util.Vector<ScoredMovie> inputScores) {
+        Basic2DMatrix data = new Basic2DMatrix(inputScores.size(), NUMBER_OF_FEATURES_USED);
+        org.la4j.vector.Vector targetScores = new BasicVector(inputScores.size());
+
+        for (int i = 0; i < inputScores.size(); i++) {
+            for (int j = 0; j < NUMBER_OF_FEATURES_USED; j++) {
+                data.set(i, j, inputScores.get(i).movie.features[j]);
+            }
+            targetScores.set(i, inputScores.get(i).score - inputScores.get(i).movie.avg);
+        }
+
+        org.la4j.vector.Vector usersCoefficients = data.transpose().multiply(data)
+                .withInverter(LinearAlgebra.InverterFactory.GAUSS_JORDAN).inverse()
+                .multiply(data.transpose()).multiply(targetScores);
+
+        java.util.Vector<ScoredMovie> result = new java.util.Vector<>();
         for (Movie movie : movies) {
             double score = usersCoefficients.toRowMatrix().multiply(new BasicVector(movie.features)).sum() + movie.avg;
             result.add(new ScoredMovie(movie, score));
@@ -64,8 +88,11 @@ public class RecomendationUtility {
             while (titlesScanner.hasNextLine()) {
                 Movie movie = new Movie();
 
-                movie.title = titlesScanner.nextLine();
-                //TODO process title
+                StringTokenizer tokenizer = new StringTokenizer(titlesScanner.nextLine(),",");
+
+                movie.id = Integer.parseInt(tokenizer.nextToken());
+                movie.year = tokenizer.nextToken();
+                movie.title = tokenizer.nextToken();
 
                 avgsScanner.next(); // ignore movie number
                 movie.avg = avgsScanner.nextDouble();
