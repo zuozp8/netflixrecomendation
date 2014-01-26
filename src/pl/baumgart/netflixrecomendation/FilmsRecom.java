@@ -156,12 +156,13 @@ public class FilmsRecom {
             public void actionPerformed(ActionEvent e) {
 
                 Vector<ScoredMovie> scoredMovies = recomendationUtility.recommend(ratedMovies);
-                Vector<ScoredMovie> scoredTop10 = new Vector<>();
+                Vector<String> scoredTop10 = new Vector<>();
                 Collections.sort(scoredMovies);
                 Collections.reverse(scoredMovies);
 
                 for (int i = 0; i < 10; i++) {
-                    scoredTop10.add(scoredMovies.get(i));
+                    Movie curr = scoredMovies.get(i).movie;
+                    scoredTop10.add(curr.title +"    " + curr.year );
                     //System.out.println(scoredMovies.get(i).score + "\t" + scoredMovies.get(i).movie.title);
                 }
 
