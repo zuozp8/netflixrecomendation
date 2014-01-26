@@ -41,7 +41,7 @@
         <properties>
           <font name="Tahoma" size="12"/>
           <foreground color="-1"/>
-          <text value="Rate at least 5 you've already seen and checkout the recommendations"/>
+          <text value="Rate at least 6 you've already seen and checkout the recommendations"/>
         </properties>
       </component>
       <component id="2c86a" class="javax.swing.JComboBox" binding="comboBox1" custom-create="true" default-binding="true">

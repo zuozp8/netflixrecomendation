@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Main {
-
+/*
     public static void main(String[] args) {
         RecomendationUtility recomendationUtility = new RecomendationUtility();
 
@@ -19,7 +19,7 @@ public class Main {
         usersInput.add(new ScoredMovie(recomendationUtility.getMovies().get(510), 2));
         usersInput.add(new ScoredMovie(recomendationUtility.getMovies().get(410), 3));
         usersInput.add(new ScoredMovie(recomendationUtility.getMovies().get(210), 1));*/
-
+/*
         usersInput.add(new ScoredMovie(recomendationUtility.getMovies().get(1643), 3));
         usersInput.add(new ScoredMovie(recomendationUtility.getMovies().get(2320), 4));
         usersInput.add(new ScoredMovie(recomendationUtility.getMovies().get(4430), 3));
@@ -39,5 +39,5 @@ public class Main {
         }
 
     }
-
+*/
 }

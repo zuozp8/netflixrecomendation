@@ -120,7 +120,7 @@ public class FilmsRecom {
                     }
 
                     list1.setListData(ratedMovies);
-                    if(ratedMovies.size()<RecomendationUtility.NUMBER_OF_FEATURES_USED)
+                    if(ratedMovies.size()<RecomendationUtility.NUMBER_OF_FEATURES_USED + 1)
                         showRecommendationsButton.setEnabled(false);
 
                 }
@@ -141,7 +141,7 @@ public class FilmsRecom {
                     ratedMovies.add( new ScoredMovie((Movie)comboBox1.getSelectedItem(),Double.parseDouble((String) comboBox2.getSelectedItem())));
                     list1.setListData(ratedMovies);
                 }
-                if(ratedMovies.size()>=RecomendationUtility.NUMBER_OF_FEATURES_USED)
+                if(ratedMovies.size()>=RecomendationUtility.NUMBER_OF_FEATURES_USED + 1)
                     showRecommendationsButton.setEnabled(true);
 
             }
@@ -156,16 +156,16 @@ public class FilmsRecom {
             public void actionPerformed(ActionEvent e) {
 
                 Vector<ScoredMovie> scoredMovies = recomendationUtility.recommend(ratedMovies);
-                Vector<ScoredMovie> scoredtop10 = new Vector<>();
+                Vector<ScoredMovie> scoredTop10 = new Vector<>();
                 Collections.sort(scoredMovies);
                 Collections.reverse(scoredMovies);
 
                 for (int i = 0; i < 10; i++) {
-                    scoredtop10.add(scoredMovies.get(i));
-                    System.out.println(scoredMovies.get(i).score + "\t" + scoredMovies.get(i).movie.title);
+                    scoredTop10.add(scoredMovies.get(i));
+                    //System.out.println(scoredMovies.get(i).score + "\t" + scoredMovies.get(i).movie.title);
                 }
 
-                list1.setListData(scoredtop10);
+                list1.setListData(scoredTop10);
                 ratedMovies.clear();
             } 
 
